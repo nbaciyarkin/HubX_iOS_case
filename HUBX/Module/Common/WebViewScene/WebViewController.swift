@@ -7,9 +7,9 @@
 
 import Foundation
 import UIKit
+import WebKit
 
 class WebViewController: UIViewController {
-    
     var webURL:String?
     
     private let webView: WKWebView = {
@@ -20,13 +20,8 @@ class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        
-        let url = URL(string: article ?? "https://www.google.com")!
-                let urlRequest = URLRequest(url: url)
-
-                webView.load(urlRequest)
-                webView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
-                view.addSubview(webView)
+        webView.autoresizingMask = [.flexibleWidth,.flexibleHeight]
+        view.addSubview(webView)
     }
 
     override func viewDidLayoutSubviews() {
@@ -34,11 +29,18 @@ class WebViewController: UIViewController {
         webView.frame = view.bounds
     }
     
-    
-    func configure(with model: WebArticleViewModel) {
-        guard let url = URL(string: "\(model.article)") else {return}
-        webView.load(URLRequest(url: url))
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
     }
+    
+    func configure(with url: String?) {
+
+        if let url = URL(string: url ?? "https://firebasestorage.googleapis.com/v0/b/flora---plant-identifier.appspot.com/o/public%2Fcard2.png?alt=media") {
+            webView.load(URLRequest(url: url))
+        }
+    }
+       
 }
 
 

@@ -27,6 +27,7 @@ class HomeSectionItem {
 
 protocol HomeInteractorDelegate: AnyObject {
     func reloadData()
+    func presentWebView(indexPath: IndexPath)
 }
 class HomeInteractor {
     
@@ -36,10 +37,12 @@ class HomeInteractor {
         case Feature = "Plants"
     }
     
-    var questionList = [Question]()
+    private(set) var questionList = [Question]()
+    private(set) var plantList = [Plant]()
     
     weak var delegate: HomeInteractorDelegate?
     var sectionList = [HomeSectionItem]()
+    
     
     
     func registerCell(tableView: UITableView){
@@ -60,12 +63,14 @@ class HomeInteractor {
         
     func createGetStartedCell(tableView: UITableView, indexPath: IndexPath) -> GetStartedTableCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: GetStartedTableCell.identifier, for: indexPath) as! GetStartedTableCell
+        cell.delegate = self
         cell.sentData(list: self.questionList)
         return cell
     }
     
     func createPlantsCell(tableView: UITableView, indexPath: IndexPath) -> PlantTypeCollectionTableCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PlantTypeCollectionTableCell.identifier, for: indexPath) as! PlantTypeCollectionTableCell
+        cell.setData(list: self.plantList)
         return cell
     }
     
@@ -146,7 +151,7 @@ extension HomeInteractor {
         }
         else if sectionItem.sectionType == .Plants {
             if sectionItem.cellList[indexPath.row].cellType == .Plants {
-                return 720
+                return  100 * CGFloat(plantList.count)
             }
         }
         return 100
@@ -171,25 +176,49 @@ extension HomeInteractor {
             return nil
         }
     }
+    
+    func showWebView(nav: UINavigationController, indexPath: IndexPath) {
+        let vc = WebViewInteractor(nav: nav)
+        vc.showDetail(URL:questionList[indexPath.row].uri ?? "https://plantapp.app/blog/differences-between-species-and-varieties/")
+    }
 }
 
 // fetch how to use it
 extension HomeInteractor {
     func getQuestions() {
-        Service.getQuestions { response in
+        Service.getQuestions { [weak self] response in
             print(response)
+            guard let self = self else {return}
+            self.questionList.removeAll()
             self.questionList.append(contentsOf: response)
             self.delegate?.reloadData()
         } onError: { error in
             print(error)
         }
     }
-   
+}
+
+extension HomeInteractor: GetStartedTableCellDelegate {
+    func didTappedGetStartedCell(_ cell: GetStartedTableCell, indexPath: IndexPath) {
+        delegate?.presentWebView(indexPath: indexPath)
+    }
+    
+    
 }
 
 // fetch plants
 extension HomeInteractor {
-    
+    func getPlants(){
+        Service.getPlants { [weak self] response in
+            guard let self = self else {return}
+            self.plantList.removeAll()
+            self.plantList = response.data
+            self.delegate?.reloadData()
+        } onError: { error in
+            print(error)
+        }
+    }
 }
-    
+
+
 

@@ -20,21 +20,21 @@ class WelcomeViewController : UIViewController {
     }
     
     // MARK: - UI Components
-    let welcomeLabel: UILabel = {
+    private let welcomeLabel: UILabel = {
         let label = UILabel()
         label.text = "Welcome to"
         label.font = UIFont.systemFont(ofSize: 28, weight: .semibold)
         return label
     }()
     
-    let appNamelabel: UILabel = {
+    private let appNamelabel: UILabel = {
         let label = UILabel()
         label.text = "PlantApp"
         label.font = UIFont.systemFont(ofSize: 28, weight: .heavy)
         return label
     }()
     
-    let headerStackView: UIStackView = {
+    private let headerStackView: UIStackView = {
         let stackV = UIStackView()
         stackV.axis = .horizontal
         stackV.backgroundColor = .clear
@@ -44,20 +44,20 @@ class WelcomeViewController : UIViewController {
         return stackV
     }()
     
-    let infoLabel: UILabel = {
+    private let infoLabel: UILabel = {
         let label = UILabel()
         label.text = "Identify more than 3000+ plants and 88% accuracy."
         label.numberOfLines = 3
         return label
     }()
     
-    let imageView: UIImageView = {
+    private let imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = Constants.welcomeImage
         return imageView
     }()
     
-    let button: UIButton = {
+    private let button: UIButton = {
         let btn = UIButton()
         btn.translatesAutoresizingMaskIntoConstraints = false
         btn.setTitle("Get Started", for: .normal)
@@ -72,7 +72,7 @@ class WelcomeViewController : UIViewController {
         return btn
     }()
     
-    let bottomInfoLabel: UILabel = {
+    private let bottomInfoLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .center
         label.text = "By tapping next, you are agreeing to PlantID"
@@ -81,21 +81,21 @@ class WelcomeViewController : UIViewController {
         return label
     }()
     
-    let termsButton: UIButton = {
+    private let termsButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("Terms of Use", for: .normal)
         btn.titleLabel?.textAlignment = .center
         return btn
     }()
 
-    let privacyButton: UIButton = {
+    private let privacyButton: UIButton = {
         let btn = UIButton()
         btn.setTitle("Privacy Policy ", for: .normal)
         btn.titleLabel?.textAlignment = .center
         return btn
     }()
     
-    let operand : UILabel = {
+    private let operand : UILabel = {
         let label = UILabel()
         label.text = "&"
         label.textColor = Constants.text_opac_green.withAlphaComponent(0.7)
@@ -103,7 +103,7 @@ class WelcomeViewController : UIViewController {
         return label
     }()
     
-    let bottomStackView: UIStackView = {
+    private let bottomStackView: UIStackView = {
         let stackV = UIStackView()
         stackV.axis = .horizontal
         stackV.backgroundColor = .clear
@@ -115,26 +115,40 @@ class WelcomeViewController : UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .white
         let gradientLayer = createGradientLayer()
         gradientLayer.frame = view.bounds
         view.layer.insertSublayer(gradientLayer, at: 0)
         setUI()
         setUnderlines()
-        
-        
-
+        //checkIsFirstLaunch()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if Constants.isFirstPresentedTime {
-                   
+        checkIsFirstLaunch()
+    }
+    
+    
+    func checkIsFirstLaunch(){
+        if UserDefaults.standard.isFirstLaunch() {
+            if Constants.isFirstPresentedTime {
+                UserDefaults.standard.setIsFirstLaunch(value: false)
+                Constants.isFirstPresentedTime = false
+            }
+            else {
+                //UserDefaults.standard.setIsFirstLaunch(value: false)
+                self.dismiss(animated: true, completion: nil)
+            }
+        }
+        else {
+            UserDefaults.standard.setIsFirstLaunch(value: false)
             Constants.isFirstPresentedTime = false
-        } else {
             self.dismiss(animated: true, completion: nil)
         }
-     
+        //self.dismiss(animated: true, completion: nil)
+        
     }
     
     func setUI() {
@@ -199,9 +213,9 @@ class WelcomeViewController : UIViewController {
     }
     
     func setUnderlines(){
-        Utilityhelper.setButtonUnderlineTitle(button: privacyButton, title: "Privacy Policy", font: UIFont.systemFont(ofSize: 16, weight: .regular), color:Constants.text_opac_green.withAlphaComponent(0.7))
+        UtilityHelper.setButtonUnderlineTitle(button: privacyButton, title: "Privacy Policy", font: UIFont.systemFont(ofSize: 16, weight: .regular), color:Constants.text_opac_green.withAlphaComponent(0.7))
         
-        Utilityhelper.setButtonUnderlineTitle(button: termsButton, title: "Terms of Use", font: UIFont.systemFont(ofSize: 16, weight: .regular), color: Constants.text_opac_green.withAlphaComponent(0.7))
+        UtilityHelper.setButtonUnderlineTitle(button: termsButton, title: "Terms of Use", font: UIFont.systemFont(ofSize: 16, weight: .regular), color: Constants.text_opac_green.withAlphaComponent(0.7))
     }
     
     func createGradientLayer() -> CAGradientLayer {

@@ -1,0 +1,30 @@
+PODS:
+  - Alamofire (5.6.4)
+  - ESTabBarController-swift (2.8.0)
+  - SDWebImage (5.15.4):
+    - SDWebImage/Core (= 5.15.4)
+  - SDWebImage/Core (5.15.4)
+  - SnapKit (5.6.0)
+
+DEPENDENCIES:
+  - Alamofire
+  - ESTabBarController-swift
+  - SDWebImage (~> 5.0)
+  - SnapKit (~> 5.6.0)
+
+SPEC REPOS:
+  trunk:
+    - Alamofire
+    - ESTabBarController-swift
+    - SDWebImage
+    - SnapKit
+
+SPEC CHECKSUMS:
+  Alamofire: 4e95d97098eacb88856099c4fc79b526a299e48c
+  ESTabBarController-swift: 05593a6ad64700b03c0eb60ff625916370aa4136
+  SDWebImage: 1c39de67663e5eebb2f41324d5d580eeea12dd4c
+  SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
+
+PODFILE CHECKSUM: 62ba1549f8f1202666d5a6800d59cb1efd45f6d6
+
+COCOAPODS: 1.11.3

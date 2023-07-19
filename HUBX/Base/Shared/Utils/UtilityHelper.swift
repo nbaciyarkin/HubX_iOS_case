@@ -10,8 +10,7 @@ import UIKit
 
 
 
-class Utilityhelper {
-    
+class UtilityHelper {
     static func setButtonUnderlineTitle(button: UIButton, title: String, font: UIFont, color: UIColor) {
             let attrs = [NSAttributedString.Key.foregroundColor : color, NSAttributedString.Key.font : font, NSAttributedString.Key.underlineStyle: NSUnderlineStyle.single.rawValue] as [NSAttributedString.Key : Any]
             let attributedString = NSMutableAttributedString(string: (title), attributes:attrs)

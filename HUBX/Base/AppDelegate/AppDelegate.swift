@@ -6,22 +6,16 @@
 //  Copyright © 2019 Saifan Nadaf. All rights reserved.
 //
 
-import UIKit
 
 import ESTabBarController_swift
-
+import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate,UITabBarControllerDelegate {
 
     var window: UIWindow?
-
-
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        
-        
+    var tabBarController: UITabBarController = {
         let tabBarController = ESTabBarController()
-        tabBarController.delegate = self
          tabBarController.tabBar.shadowImage = UIImage(named: "transparent")
        
         
@@ -48,14 +42,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UITabBarControllerDelegate
             }
         }
         
-        let v1 = HomeViewController()
-        let v2 = HomeViewController()
-        let v3 = HomeViewController()
-        let v4 = HomeViewController()
-        let v5 = HomeViewController()
         
-   
-       
+        let v1 = HomeViewController()
+        let v2 = UIViewController()
+        let v3 = UIViewController()
+        let v4 = UIViewController()
+        let v5 = UIViewController()
+        
         
         v1.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: "Home", image: UIImage(named: "home"), selectedImage: UIImage(named: "home_1"))
     
@@ -65,15 +58,22 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UITabBarControllerDelegate
         v5.tabBarItem = ESTabBarItem.init(ExampleIrregularityBasicContentView(), title: "Profile", image: UIImage(named: "profile_icon"), selectedImage: UIImage(named: "Profile"))
         
         tabBarController.viewControllers = [v1, v2, v3, v4, v5]
-        
         tabBarController.tabBar.backgroundColor = .white
+        return tabBarController
+    }()
+    
+
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         
+       
+      
+        //UserDefaults.standard.setIsFirstLaunch(value: true)
+                
+        tabBarController.delegate = self
         let navigationController = ExampleNavigationController.init(rootViewController: tabBarController)
- 
         self.window?.rootViewController = navigationController
-        
-        // Override point for customization after application launch.
         return true
     }
 
@@ -98,7 +98,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate,UITabBarControllerDelegate
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 

@@ -21,7 +21,7 @@ extension UserDefaults {
         synchronize()
     }
     
-    func isFirstLaunched() -> Bool {
+    func isFirstLaunch() -> Bool {
         return bool(forKey: UserDefaultKeys.isFirstLaunch.rawValue)
     }
 }

@@ -79,18 +79,15 @@ extension DemoViewController {
         let page1 = OnboardingViewController(headerImage: Constants.onBoardHeader_2!, centerImage: Constants.onBoardScreen_2!, cornerImage: nil)
         page1.setUI()
         
-        let page2 = OnboardingViewController(headerImage: Constants.onBoardHeader_3!, centerImage: Constants.onBoardScreen_3!, cornerImage: Constants.onBoardScreen_3_corner!)
+        let page2 = OnboardingViewController(headerImage: Constants.onBoardHeader_3!, centerImage: Constants.onBoardScreen_3 ?? Constants.onBoardScreen_2!, cornerImage: Constants.onBoardScreen_3_corner!)
         
         page2.setGuidesSceneConstraints()
         
         let page3 = PaywallViewController()
                                             
-        //let page4 = LoginViewController() buraya ödeme ekranı ekle
-        
         pages.append(page1)
         pages.append(page2)
         pages.append(page3)
-        
         
         setViewControllers([pages[initialPage]], direction: .forward, animated: true, completion: nil)
       
@@ -215,14 +212,11 @@ extension DemoViewController: UIPageViewControllerDelegate {
         pageControlBottomAnchor?.constant = -80
         nextButton.isHidden = true
         closeButton.isHidden = true
-        //skipButtonTopAnchor?.constant = -80
-        //nextButtonTopAnchor?.constant = -80
+    
     }
 
     private func showControls() {
         pageControlBottomAnchor?.constant = 16
-        //skipButtonTopAnchor?.constant = 16
-        //nextButtonTopAnchor?.constant = 16
     }
 }
 
@@ -251,7 +245,9 @@ extension DemoViewController {
     }
     
     @objc func dismissOnBoarding() {
-        self.dismiss(animated: true, completion: nil)
+        self.dismiss(animated: true) {
+        
+        }
     }
 }
 

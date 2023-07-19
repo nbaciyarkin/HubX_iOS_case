@@ -13,12 +13,12 @@ class GetStartedCollectionCell: UICollectionViewCell {
     static let identifier = "GetStartedCollectionCell"
     
 
-    var containerView: UIView = {
+    private var containerView: UIView = {
         let view = UIView()
         return view
     }()
     
-    var imageView: UIImageView = {
+    private var imageView: UIImageView = {
         let img = UIImageView()
         img.image = Constants.identify_plants_image
         img.layer.cornerRadius = 14
@@ -27,7 +27,7 @@ class GetStartedCollectionCell: UICollectionViewCell {
         return img
     }()
     
-    var infoLabel: UILabel = {
+    private var infoLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "How to identify plants with PlantApp?"
         lbl.textAlignment = .left
@@ -56,10 +56,16 @@ class GetStartedCollectionCell: UICollectionViewCell {
     }
     
     
-    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        infoLabel.text = ""
+    }
 
-    func setData() {
-        //
+
+    func setData(title: String, questionImageURL: URL) {
+        imageView.sd_setImage(with: questionImageURL, completed: nil)
+        infoLabel.text = title
     }
     
     func setUI() {

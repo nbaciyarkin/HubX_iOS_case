@@ -17,7 +17,7 @@ class PlantTypeCollectionTableCell: UITableViewCell {
     private let plantTypesCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.itemSize = CGSize(width: 178 , height: 172)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width / 2.5 , height: 172)
         layout.minimumInteritemSpacing = 10
         layout.minimumLineSpacing = 1
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -28,6 +28,16 @@ class PlantTypeCollectionTableCell: UITableViewCell {
         collectionView.isScrollEnabled = false
         return collectionView
     }()
+    
+    var plantList = [Plant](){
+        didSet{
+            DispatchQueue.main.async {
+                self.plantTypesCollectionView.reloadData()
+            }
+        }
+
+    }
+
 
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -52,8 +62,22 @@ class PlantTypeCollectionTableCell: UITableViewCell {
         }
     }
     
-    func setData() {
-        //
+    func setData(list:[Plant]){
+        self.plantList = list
+        DispatchQueue.main.async {
+            self.plantTypesCollectionView.reloadData()
+        }
+        rebuildCollectionView(plantCount: plantList.count)
+    }
+    
+    func rebuildCollectionView(plantCount: Int){
+        plantTypesCollectionView.snp.removeConstraints()
+        plantTypesCollectionView.snp.makeConstraints { make in
+            make.height.equalTo(plantCount * 100)
+            make.leading.equalTo(contentView.snp.leading)
+            make.top.equalTo(contentView.snp.top)
+            make.trailing.equalTo(contentView.snp.trailing)
+        }
     }
     
     required init?(coder: NSCoder) {
@@ -63,15 +87,19 @@ class PlantTypeCollectionTableCell: UITableViewCell {
 
 extension PlantTypeCollectionTableCell: UICollectionViewDataSource, UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // api bağlayınca düzenlenecek
-        return 7
+        return plantList.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PlantTypeCollectionCell.identifier, for: indexPath) as? PlantTypeCollectionCell else {
-            // api bağlayınca düzenlenecek
             return UICollectionViewCell()
         }
-       return cell
+        let plant = plantList[indexPath.row]
+        if let url = URL(string: plant.image?.url ??  "https://firebasestorage.googleapis.com/v0/b/flora---plant-identifier.appspot.com/o/public%2Fcard2.png?alt=media"){
+            cell.setData(title: plant.title ?? "Edible Plants", questionImageURL: url)
+            print(plant.title)
+            return cell
+        }
+       return UICollectionViewCell()
     }
 }

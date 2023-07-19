@@ -41,11 +41,11 @@ class HomeViewController: UIViewController {
         return field
     }()
     
-    let helloMessageLabel = UILabel()
-    let dailyMessageLabel = UILabel()
+    private let helloMessageLabel = UILabel()
+    private let dailyMessageLabel = UILabel()
     
     
-    let infoStackView: UIStackView = {
+    private let infoStackView: UIStackView = {
         let stackV = UIStackView()
         stackV.axis = .vertical
         stackV.backgroundColor = .clear
@@ -54,22 +54,22 @@ class HomeViewController: UIViewController {
         stackV.alignment = .leading
         return stackV
     }()
-    let headerView: UIView = {
+    private let headerView: UIView = {
         let view = UIView()
         view.backgroundColor = Constants.header_background_color
         return view
     }()
     
-    let tableView = UITableView()
-    let interactor = HomeInteractor()
+    private let tableView = UITableView()
+    private let interactor = HomeInteractor()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         interactor.delegate = self
         interactor.getQuestions()
+        interactor.getPlants()
         view.backgroundColor = Constants.home_background_color
         setTableView()
-        
         setUI()
     }
     
@@ -157,15 +157,15 @@ class HomeViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
         
-//        if Constants.isFirstPresentedTime {
-//            let vc = WelcomeViewController()
-//            vc.modalPresentationStyle = .fullScreen
-//            vc.modalTransitionStyle = .crossDissolve
-//            self.present(vc, animated: true, completion: nil)
-//        }
-//        else {
-//            self.dismiss(animated: true, completion: nil)
-//        }
+        if Constants.isFirstPresentedTime {
+            let vc = WelcomeViewController()
+            vc.modalPresentationStyle = .fullScreen
+            vc.modalTransitionStyle = .crossDissolve
+            self.present(vc, animated: true, completion: nil)
+        }
+        else {
+            self.dismiss(animated: true, completion: nil)
+        }
     }
 }
 extension HomeViewController: UITableViewDataSource {
@@ -193,16 +193,19 @@ extension HomeViewController: UITableViewDelegate {
         interactor.createHeaderView(tableView, section: section)
     }
     
-    func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 24
-    }
 }
 extension HomeViewController: HomeInteractorDelegate {
+    func presentWebView(indexPath: IndexPath) {
+        guard let navigationController = self.navigationController else {return}
+        interactor.showWebView(nav: navigationController, indexPath: indexPath)
+    }
+    
     func reloadData() {
         DispatchQueue.main.async {
             self.tableView.reloadData()
         }
-    }    
+    }
 }
+    
 
 

@@ -7,8 +7,6 @@
 
 import Foundation
 
-
-
 struct Question: Codable {
     let id: Int?
     let title, subtitle: String?

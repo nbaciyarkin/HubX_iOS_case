@@ -18,7 +18,6 @@ class Constants {
     static let text_opac_green = UIColor(named: "text_opac_green")!
     static let paywall_background_color = UIColor(named: "paywall_background_color")!
     
-    
     static let welcomeImage = UIImage(named: "welcomeScreen")
     
     static let onBoardScreen_2 = UIImage(named: "onBoardScreen_2")

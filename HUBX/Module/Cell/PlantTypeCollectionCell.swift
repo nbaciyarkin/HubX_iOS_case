@@ -12,7 +12,7 @@ import UIKit
 class PlantTypeCollectionCell: UICollectionViewCell {
     static let identifier = "PlantTypeCollectionCell"
     
-    var imageView: UIImageView = {
+    private var imageView: UIImageView = {
         let img = UIImageView()
         img.image = Constants.plant_photo
         img.layer.cornerRadius = 14
@@ -21,7 +21,7 @@ class PlantTypeCollectionCell: UICollectionViewCell {
         return img
     }()
     
-    var infoLabel: UILabel = {
+    private var infoLabel: UILabel = {
         let lbl = UILabel()
         lbl.text = "Edible Plants"
         lbl.textAlignment = .left
@@ -41,6 +41,17 @@ class PlantTypeCollectionCell: UICollectionViewCell {
         setUI()
 
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        imageView.image = nil
+        infoLabel.text = ""
+    }
+    
+    func setData(title: String, questionImageURL: URL) {
+        imageView.sd_setImage(with: questionImageURL, completed: nil)
+        infoLabel.text = title
+    }
     override func layoutSubviews() {
            super.layoutSubviews()
            contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0))
@@ -52,7 +63,6 @@ class PlantTypeCollectionCell: UICollectionViewCell {
     
     func setUI() {
         contentView.addSubview(imageView)
-       
         imageView.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -64,7 +74,7 @@ class PlantTypeCollectionCell: UICollectionViewCell {
         infoLabel.snp.makeConstraints { make in
             make.leading.equalTo(contentView.snp.leading).offset(16)
             make.top.equalTo(contentView.snp.top).offset(16)
-            make.width.equalTo(48)
+            make.width.equalToSuperview().multipliedBy(0.6)
             make.height.equalTo(42)
         }
     }
