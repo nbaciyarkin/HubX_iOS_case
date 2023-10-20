@@ -11,6 +11,7 @@ import SnapKit
 
 
 
+@available(iOS 13.0, *)
 class HomeViewController: UIViewController {
     private var searchTextField: UITextField = {
         let field = UITextField()
@@ -35,7 +36,11 @@ class HomeViewController: UIViewController {
         field.layer.cornerRadius = 12
         field.backgroundColor = .secondarySystemBackground
         field.layer.borderWidth = 0.5
-        field.layer.borderColor = UIColor.secondaryLabel.cgColor
+        if #available(iOS 13.0, *) {
+            field.layer.borderColor = UIColor.secondaryLabel.cgColor
+        } else {
+            // Fallback on earlier versions
+        }
         field.backgroundColor = UIColor.white
         //field.addTarget(self, action: #selector(deActiveSearch(_:)), for: .touchUpOutside)
         return field

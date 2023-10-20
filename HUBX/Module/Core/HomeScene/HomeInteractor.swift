@@ -73,7 +73,7 @@ class HomeInteractor {
         cell.setData(list: self.plantList)
         return cell
     }
-    
+
     
     func createSectionList() {
         self.sectionList.removeAll()
